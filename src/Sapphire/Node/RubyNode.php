@@ -9,11 +9,6 @@ class RubyNode extends AbstractInline
     private string $parent_char;
     private string $ruby_char;
 
-    public function isContainer(): bool
-    {
-        return true;
-    }
-
     public function __construct(string $parent, string $ruby)
     {
         $this->parent_char = $parent;
