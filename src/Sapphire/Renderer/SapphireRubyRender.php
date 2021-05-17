@@ -6,18 +6,17 @@ use League\CommonMark\ElementRendererInterface;
 use League\CommonMark\HtmlElement;
 use League\CommonMark\Inline\Element\AbstractInline;
 use League\CommonMark\Inline\Renderer\InlineRendererInterface;
-use Whojinn\Sapphire\Node\RubyNode;
+use Whojinn\Sapphire\Node\RubyChildNode;
 
-class SapphireInlineRenderer implements InlineRendererInterface
+class SapphireRubyRender implements InlineRendererInterface
 {
     public function render(AbstractInline $inline, ElementRendererInterface $htmlRenderer)
     {
-        if (!($inline instanceof RubyNode)) {
+        // RubyNode以外が$inlineに収まっていたらエラーを吐く
+        if (!($inline instanceof RubyChildNode)) {
             throw new \InvalidArgumentException('Incompatible inline type: '.get_class($inline));
         }
 
-        $attrs = $inline->getData('attributes', []);
-
-        return new HtmlElement('ruby', $attrs, $htmlRenderer->renderInlines($inline->children()));
+        return new HtmlElement('rt', [], $htmlRenderer->renderInlines($inline->children()));
     }
 }

@@ -6,7 +6,7 @@ class SapphireKugiri
 {
     /**
      * 親文字の区切りパターンを収めた配列。
-     * 以下のコードを参考にしました：.
+     * noisan氏のコードを参考にしました：.
      *
      * @see https://github.com/noisan/parsedown-rubytext/blob/master/lib/Parsedown/AozoraRubyTextTrait.php
      */
@@ -18,8 +18,8 @@ class SapphireKugiri
          *   - t2hs.rbの実装では半角"|"での代用を許していない。
          *   - このExtensionでもそれに従っておく。
          */
-        'delimited' => '/｜(([^(｜|\n)])+?)$/u',
-
+        // 'delimited' => '/｜(([^(｜|\n)])+?)$/u',
+        'delimited' => '/｜([^(｜|\n)]+?)$/u',
         /* 漢字グループ:
          *   - 青空文庫では「仝々〆〇ヶ\x{303B}」も漢字として扱うと明記している(\x{303B}は二の字点)。
          *     @see http://www.aozora.gr.jp/KOSAKU/MANUAL_2.html#ruby

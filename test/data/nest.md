@@ -10,4 +10,4 @@
 
 リンクと組み合わせることもできます。
 
-* ｜[振り仮名](https://en.wikipedia.org/wiki/Furigana)《ふりがな《Furigana》》
+*  [｜振り仮名《ふりがな》](https://en.wikipedia.org/wiki/Furigana)

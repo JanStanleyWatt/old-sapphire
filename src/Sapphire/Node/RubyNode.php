@@ -2,26 +2,25 @@
 
 namespace Whojinn\Sapphire\Node;
 
-use League\CommonMark\Inline\Element\AbstractInline;
+use League\CommonMark\Inline\Element\AbstractStringContainer;
+use League\CommonMark\Inline\Element\Text;
 
-class RubyNode extends AbstractInline
+class RubyNode extends AbstractStringContainer
 {
-    private string $parent_char;
-    private string $ruby_char;
-
-    public function __construct(string $parent, string $ruby)
+    public function isContainer(): bool
     {
-        $this->parent_char = $parent;
-        $this->ruby_char = $ruby;
+        return true;
     }
 
-    public function getParentCher(): string
+    public function __construct(array $parent, array $ruby, array $data = [])
     {
-        return $this->parent_char;
-    }
+        assert(count($parent) === count($ruby));
 
-    public function getRubyCher(): string
-    {
-        return $this->ruby_char;
+        for ($i = 0; $i < count($ruby); ++$i) {
+            $this->appendChild(new Text($parent[$i]));
+            $this->appendChild(new RubyChildNode($ruby[$i]));
+        }
+
+        $this->data = $data;
     }
 }

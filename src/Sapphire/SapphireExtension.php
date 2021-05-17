@@ -4,11 +4,15 @@ namespace Whojinn\Sapphire;
 
 use League\CommonMark\ConfigurableEnvironmentInterface;
 use League\CommonMark\Event\DocumentParsedEvent;
+use League\CommonMark\Event\DocumentPreParsedEvent;
 use League\CommonMark\Extension\ExtensionInterface;
 use Whojinn\Sapphire\Listener\SapphirePostParser;
+use Whojinn\Sapphire\Listener\SapphirePreParser;
+use Whojinn\Sapphire\Node\RubyChildNode;
 use Whojinn\Sapphire\Node\RubyNode;
 use Whojinn\Sapphire\Parser\SapphireInlineParser;
 use Whojinn\Sapphire\Renderer\SapphireInlineRenderer;
+use Whojinn\Sapphire\Renderer\SapphireRubyRender;
 
 /**
  * 青空文庫式ルビを追加する拡張機能。
@@ -20,11 +24,11 @@ class SapphireExtension implements ExtensionInterface
 {
     public function register(ConfigurableEnvironmentInterface $environment)
     {
-        $configure = $environment->getConfig();
-        $insert_rp = (array_key_exists('insert_rp', $configure) and $configure['insert_rp'] === true);
-
-        $environment->addInlineParser(new SapphireInlineParser())
+        $environment->addInlineParser(new SapphireInlineParser($environment->getConfig('sutegana', false)), 9000)
+                    // ->addEventListener(DocumentPreParsedEvent::class, [new SapphirePreParser(), 'preParse'])
                     ->addEventListener(DocumentParsedEvent::class, [new SapphirePostParser(), 'postParse'])
-                    ->addInlineRenderer(RubyNode::class, new SapphireInlineRenderer($insert_rp));
+                    ->addInlineRenderer(RubyNode::class, new SapphireInlineRenderer())
+
+                    ->addInlineRenderer(RubyChildNode::class, new SapphireRubyRender());
     }
 }
