@@ -8,27 +8,39 @@ use League\CommonMark\Event\DocumentPreParsedEvent;
 use League\CommonMark\Extension\ExtensionInterface;
 use Whojinn\Sapphire\Listener\SapphirePostParser;
 use Whojinn\Sapphire\Listener\SapphirePreParser;
-use Whojinn\Sapphire\Node\RubyChildNode;
 use Whojinn\Sapphire\Node\RubyNode;
+use Whojinn\Sapphire\Parser\SapphireEscapeParser;
 use Whojinn\Sapphire\Parser\SapphireInlineParser;
+use Whojinn\Sapphire\Parser\SapphireSeparateParser;
 use Whojinn\Sapphire\Renderer\SapphireInlineRenderer;
-use Whojinn\Sapphire\Renderer\SapphireRubyRender;
 
 /**
  * 青空文庫式ルビを追加する拡張機能。
  *
  * 独自コンフィグ
- * insert_rp: rpタグを追加するか否か(デフォルトはfalse)
+ * sutegana: ルビ内の特定の小文字を大文字にするか否か(デフォルトはfalse)
  */
 class SapphireExtension implements ExtensionInterface
 {
+    private const CONFIG_NAME = 'sapphire';
+
+    private const DEFAULT_CONFIG = [
+        'sutegana' => false,
+        'rp_tag' => false,
+    ];
+
     public function register(ConfigurableEnvironmentInterface $environment)
     {
-        $environment->addInlineParser(new SapphireInlineParser($environment->getConfig('sutegana', false)), 9000)
+        $config = $environment->getConfig(self::CONFIG_NAME, self::DEFAULT_CONFIG);
+
+        $sutegana = $config['sutegana'];
+        $rp_tag = $config['rp_tag'];
+
+        $environment->addInlineParser(new SapphireSeparateParser(), 100)
+                    ->addInlineParser(new SapphireEscapeParser(), 100)
+                    ->addInlineParser(new SapphireInlineParser($sutegana))
                     // ->addEventListener(DocumentPreParsedEvent::class, [new SapphirePreParser(), 'preParse'])
                     ->addEventListener(DocumentParsedEvent::class, [new SapphirePostParser(), 'postParse'])
-                    ->addInlineRenderer(RubyNode::class, new SapphireInlineRenderer())
-
-                    ->addInlineRenderer(RubyChildNode::class, new SapphireRubyRender());
+                    ->addInlineRenderer(RubyNode::class, new SapphireInlineRenderer($rp_tag));
     }
 }

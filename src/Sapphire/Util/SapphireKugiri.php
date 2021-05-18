@@ -13,13 +13,6 @@ class SapphireKugiri
     private $kugiri = [
         // 'unused-label'  => '/(regex)$/u',
 
-        /* 範囲指定パターン:
-         *   - 全角"｜"を使った明示的な範囲指定。文字種に関係なく親文字を指定できる。
-         *   - t2hs.rbの実装では半角"|"での代用を許していない。
-         *   - このExtensionでもそれに従っておく。
-         */
-        // 'delimited' => '/｜(([^(｜|\n)])+?)$/u',
-        'delimited' => '/｜([^(｜|\n)]+?)$/u',
         /* 漢字グループ:
          *   - 青空文庫では「仝々〆〇ヶ\x{303B}」も漢字として扱うと明記している(\x{303B}は二の字点)。
          *     @see http://www.aozora.gr.jp/KOSAKU/MANUAL_2.html#ruby
@@ -28,13 +21,13 @@ class SapphireKugiri
          *   - このExtension独自の制限として、"ヶ" は漢字に続く場合だけ漢字とみなす。
          *     (例: "(OK)八ヶ岳", "(NG)5ヶ条")
          */
-        'kanji' => '/((?:[\p{Han}〆]+[ヶ]*)+)$/u',
+        'kanji' => '((?:[\p{Han}〆]+[ヶ]*)+)$',
 
         /* 全角英数字グループ:
          *   - t2hs.rbでは、全角記号、ギリシア文字、キリル文字も合わせて同一文字種としている。
          *   - このExtensionでもそれに従う。
          */
-        'zenkaku_alphanum' => '/([Ａ-Ｚａ-ｚ０-９\p{Greek}\p{Cyrillic}＆’，．－]+)$/u',
+        'zenkaku_alphanum' => '([Ａ-Ｚａ-ｚ０-９\p{Greek}\p{Cyrillic}＆’，．－]+)$',
 
         /* 半角英数字グループ:
          *   - 全角英数字グループとは記号の種類が違う。
@@ -56,7 +49,7 @@ class SapphireKugiri
          *     ("AT&T《ルビ》" では末尾の "T" にルビが振られる)
          *     @see http://kumihan.aozora.gr.jp/slabid-5.htm
          */
-        'hankaku_alphanum' => '/([A-Za-z0-9,#\-\&\']+(?:[\;\"]|\.+|[\!\?]+)?)$/u',
+        'hankaku_alphanum' => '([A-Za-z0-9,#\-\&\']+(?:[\;\"]|\.+|[\!\?]+)?)$',
 
         /* 全角カナグループ:
          *   - t2hs.rbではカタカナの小書き"ヵ"と"ヶ"をカタカナに含めていない。
@@ -67,7 +60,7 @@ class SapphireKugiri
          *     これにより濁点付き "ワ゛" などを2文字で入力した稀なケースにもルビが振れる。
          *   - さらに、Unicodeを前提として濁点付きワ-ヲと合字コトを追加しておく。
          */
-        'zenkaku_katakana' => '/((?:[\x{30A0}-\x{30FF}]+[゛゜]*)+)$/u',
+        'zenkaku_katakana' => '((?:[\x{30A0}-\x{30FF}]+[゛゜]*)+)$',
 
         /* 半角カナグループ:
          *   - 青空文庫では半角カナを使わないルールがある。
@@ -76,7 +69,7 @@ class SapphireKugiri
          *   - 半角の濁点・半濁点は半角カナに続くものだけを半角カナの一部とみなし、
          *     他の用途で別の文字種の後に置かれていることがあっても無視する。
          */
-        'hankaku_katakana' => '/((?:[ｦ-ﾝ]+[ﾞﾟｰ]*)+)$/u',
+        'hankaku_katakana' => '((?:[ｦ-ﾝ]+[ﾞﾟｰ]*)+)$/',
 
         /* ひらがなグループ:
          *   - ひらがなにもルビを振ることがある。(例: "てふてふ《ちょうちょう》"）
@@ -89,7 +82,7 @@ class SapphireKugiri
          *     "｜" で区切ることになる状況が多いのではないだろうか。これを踏まえて
          *     パターンの優先順位は最後にしておく。
          */
-        'hiragana' => '/((?:\p{Hiragana}+[゛゜]*)+)$/u',
+        'hiragana' => '((?:\p{Hiragana}+[゛゜]*)+)$/',
     ];
 
     public function getKugiri(): array

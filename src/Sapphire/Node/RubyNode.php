@@ -3,24 +3,33 @@
 namespace Whojinn\Sapphire\Node;
 
 use League\CommonMark\Inline\Element\AbstractStringContainer;
-use League\CommonMark\Inline\Element\Text;
 
+/**
+ * <ruby>タグを担当するノード。
+ */
 class RubyNode extends AbstractStringContainer
 {
-    public function isContainer(): bool
+    private string $parent_char = '';
+    private string $ruby_char = '';
+
+    public function __construct(string $ruby_char, array $data = [])
     {
-        return true;
+        $this->ruby_char = $ruby_char;
+        $this->data = $data;
     }
 
-    public function __construct(array $parent, array $ruby, array $data = [])
+    public function setParentString(string $parent_char)
     {
-        assert(count($parent) === count($ruby));
+        $this->parent_char = $parent_char;
+    }
 
-        for ($i = 0; $i < count($ruby); ++$i) {
-            $this->appendChild(new Text($parent[$i]));
-            $this->appendChild(new RubyChildNode($ruby[$i]));
-        }
+    public function getParentString(): string
+    {
+        return $this->parent_char;
+    }
 
-        $this->data = $data;
+    public function getRubyString(): string
+    {
+        return $this->ruby_char;
     }
 }

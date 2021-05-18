@@ -2,7 +2,6 @@
 
 namespace Whojinn\Sapphire\Parser;
 
-use League\CommonMark\Inline\Element\Text;
 use League\CommonMark\Inline\Parser\InlineParserInterface;
 use League\CommonMark\InlineParserContext;
 use Whojinn\Sapphire\Node\RubyNode;
@@ -10,43 +9,8 @@ use Whojinn\Sapphire\Util\SapphireKugiri;
 
 class SapphireInlineParser implements InlineParserInterface
 {
-    private string $parent_char;
     private string $ruby_char;
     private bool $is_sutegana = false;
-
-    /**
-     * このパーサーにおいて最後にカーソルが存在していた地点。
-     * カーソルにおける「》」のインデックスみたいなもの.
-     */
-    private int $prev_cursor_index = 0;
-
-    /**
-     * ルビと親文字を分割できるのであれば分割する。
-     * モノルビの条件：ルビの分割数と親文字の文字数が等しいこと.
-     */
-    private function devideRuby(string $parent, string $ruby): array
-    {
-        $ruby_array = strpos($ruby, ' ') ? mb_split(' ', $ruby) : [$ruby];
-
-        $ruby_count = count($ruby_array);
-
-        $returns = ['parent' => [], 'ruby' => []];
-
-        if ($ruby_count > 1 and mb_strlen($parent) === $ruby_count) {
-            foreach (mb_str_split($parent) as $char) {
-                array_push($returns['parent'], $char);
-            }
-            foreach ($ruby_array as $char_2) {
-                // $char = $char === '' ? $this->margeRubyElement($char, false) : $this->margeRubyElement($char, $this->insert_rp);
-                array_push($returns['ruby'], $char_2);
-            }
-        } else {
-            $returns['parent'] = [$parent];
-            $returns['ruby'] = [$ruby];
-        }
-
-        return $returns;
-    }
 
     /**
      * 捨て仮名を大文字に置換する関数。
@@ -101,65 +65,31 @@ class SapphireInlineParser implements InlineParserInterface
     {
         $parent_pattern = new SapphireKugiri();
         $cursor = $inlineContext->getCursor();
+        $start_index = $cursor->getPosition() + 1;
         $restore = $cursor->saveState();
 
         // 不正な構文を弾く
-        if ($cursor->isAtEnd() or $cursor->getPosition() === 0) {
+        if ($cursor->isAtEnd() or $cursor->getPosition() === 0 or $cursor->peek() === '｜') {
             return false;
         }
 
-        // 「《」の前にバックスラッシュがあったら
-        // 「《」をテキストに登録してからカーソルを1つ進めてtrueを返す
-        if ($cursor->peek(-1) === '\\') {
-            $tmp = $cursor->match('/^(.+?)》+/u');
-
-            // 文の終わりにまで来てしまったらfalseを返す
-            if ($cursor->isAtEnd()) {
-                $cursor->restoreState($restore);
-
-                return false;
-            }
-            $inlineContext->getContainer()->appendChild(new Text($tmp));
-            $this->prev_cursor_index = $cursor->getPosition();
-
-            return true;
-        }
-
-        // 頭文字とルビを抽出
-        $prev_cursor_index = $this->prev_cursor_index > $cursor->getCharacter() ? 0 : $this->prev_cursor_index;
-
-        $this->parent_char = $cursor->getSubstring($prev_cursor_index, $cursor->getPosition());
-        foreach ($parent_pattern->getKugiri() as $syurui => $pattern) {
-            // 最後のパース地点から「《」までを頭文字候補として、それが頭文字パターンのいずれかにマッチしたらパースをしてtrueを返す
-            if (preg_match($pattern, $this->parent_char, $matches)) {
-                $this->parent_char = $matches[1];
-
-                $cursor->advance();
-
-                // ルビを抽出
-                // ルビが空だった場合はruby_charには空文字を入れる
-                $this->ruby_char = $cursor->getCharacter() === '》' ? '' : $cursor->match('/^[^》]+/u');
-                $this->ruby_char = $this->sutegana($this->ruby_char, $this->is_sutegana);
-
-                // カーソルが終端に来なかったときに限ってtrueを返す
-                if (!$cursor->isAtEnd()) {
-                    $tmp = $this->devideRuby($this->parent_char, $this->ruby_char);
-                    $ruby_node = new RubyNode($tmp['parent'], $tmp['ruby']);
-                    $inlineContext->getContainer()->appendChild($ruby_node);
-
-                    $cursor->advance();
-                    $this->prev_cursor_index = $cursor->getPosition();
-
-                    return true;
-                } else {
-                    break;
-                }
-            }
-        }
+        // ルビを抽出
+        // ルビが空だった場合はruby_charには空文字を入れる
+        $cursor->advance();
+        $this->ruby_char = $cursor->getCharacter() === '》' ? '' : $cursor->match('/^[^》]+/u');
+        $this->ruby_char = $this->sutegana($this->ruby_char, $this->is_sutegana);
 
         // 頭文字パターンにマッチしなかった場合はレストアしてfalseを返す
-        $cursor->restoreState($restore);
+        if ($cursor->isAtEnd()) {
+            $cursor->restoreState($restore);
 
-        return false;
+            return false;
+        }
+
+        $inlineContext->getContainer()->appendChild(new RubyNode($this->ruby_char, ['delim' => true]));
+
+        $cursor->advance();
+
+        return true;
     }
 }
