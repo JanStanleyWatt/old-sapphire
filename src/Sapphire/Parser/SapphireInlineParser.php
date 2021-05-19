@@ -69,7 +69,7 @@ class SapphireInlineParser implements InlineParserInterface
         $restore = $cursor->saveState();
 
         // 不正な構文を弾く
-        if ($cursor->isAtEnd() or $cursor->getPosition() === 0 or $cursor->peek() === '｜') {
+        if ($cursor->isAtEnd() or $cursor->getPosition() === 0 or $cursor->peek(-1) === '｜') {
             return false;
         }
 

@@ -2,6 +2,7 @@
 
 namespace Whojinn\Sapphire\Parser;
 
+use League\CommonMark\Inline\Element\Text;
 use League\CommonMark\Inline\Parser\InlineParserInterface;
 use League\CommonMark\InlineParserContext;
 use Whojinn\Sapphire\Node\RubyParentNode;
@@ -27,13 +28,27 @@ class SapphireSeparateParser implements InlineParserInterface
 
         $cursor->advance();
         $parent_char = $cursor->match('/^[^《]+/u');
-
         // 「《」が見つからなかったらレストアしてfalseを返す
+        // あるいはより後ろに「｜」を見つけたら処理をそちらに譲る
+        // それから「《」のエスケープも忘れずに
         if ($cursor->isAtEnd()) {
             $cursor->restoreState($restore);
 
+            return false;
+        } elseif (mb_ereg('(^([^\\\]+?)｜)|(\\\$)', $cursor->getPreviousText())) {
+            $cursor->restoreState($restore);
+            $inlineContext->getContainer()->appendChild(new Text('｜'));
+            $cursor->advance();
+
             return true;
         }
+        // elseif (mb_ereg_match('(^(.+?)｜)|(\\\$)', $cursor->getPreviousText())) {
+        //     $cursor->restoreState($restore);
+        //     $inlineContext->getContainer()->appendChild(new Text('｜'));
+        //     $cursor->advance();
+
+        //     return true;
+        // }
 
         $parent_char = str_replace('\\', '', $parent_char);
         $inlineContext->getContainer()->appendChild(new RubyParentNode($parent_char));

@@ -17,7 +17,6 @@ class SapphirePostParser
     {
         $walker = $event->getDocument()->walker();
         $parent_pattern = new SapphireKugiri();
-        $parent_char = '';
 
         while ($event = $walker->next()) {
             $node = $event->getNode();
@@ -40,6 +39,7 @@ class SapphirePostParser
 
             if ($node instanceof RubyNode) {
                 $node->setParentString($parent_char);
+                $parent_char = '';
             }
         }
     }
