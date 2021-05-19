@@ -79,7 +79,7 @@ class SapphireInlineParser implements InlineParserInterface
         $this->ruby_char = $cursor->getCharacter() === '》' ? '' : $cursor->match('/^[^》]+/u');
         $this->ruby_char = $this->sutegana($this->ruby_char, $this->is_sutegana);
 
-        // 頭文字パターンにマッチしなかった場合はレストアしてfalseを返す
+        // 「》」がなかったらレストアしてfalseを返す
         if ($cursor->isAtEnd()) {
             $cursor->restoreState($restore);
 

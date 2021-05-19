@@ -10,6 +10,8 @@ use Whojinn\Sapphire\Util\SapphireKugiri;
 
 /**
  * パース後の抽象構文木に操作を行うクラス。
+ * つまり頭文字をTextノードから切り出すわけだが、ぶっちゃけ文字の種類の違いを元になんとなくここと推定するという
+ * かなりいい加減な代物であるため、困ったときには「｜」をガンガン使っていただきたい。
  */
 class SapphirePostParser
 {
