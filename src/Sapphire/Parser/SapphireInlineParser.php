@@ -5,7 +5,6 @@ namespace Whojinn\Sapphire\Parser;
 use League\CommonMark\Inline\Parser\InlineParserInterface;
 use League\CommonMark\InlineParserContext;
 use Whojinn\Sapphire\Node\RubyNode;
-use Whojinn\Sapphire\Util\SapphireKugiri;
 
 class SapphireInlineParser implements InlineParserInterface
 {
@@ -74,7 +73,6 @@ class SapphireInlineParser implements InlineParserInterface
         // ルビを抽出
         // ルビが空だった場合はruby_charには空文字を入れる
         $cursor->advance();
-        // $this->ruby_char = $cursor->getCharacter() === '》' ? '' : $cursor->match('/^[^》]+/u');
         $this->ruby_char = $cursor->getCharacter() === '》' ? '' : $cursor->match('/^(.+?)(?=》)/u');
 
         // マッチングしなかったり、ルビ文字があるのに「》」がなかったらレストアしてfalseを返す
