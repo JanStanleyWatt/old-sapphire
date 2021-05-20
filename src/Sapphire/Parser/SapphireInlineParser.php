@@ -9,7 +9,7 @@ use Whojinn\Sapphire\Util\SapphireKugiri;
 
 class SapphireInlineParser implements InlineParserInterface
 {
-    private string $ruby_char;
+    private ?string $ruby_char;
     private bool $is_sutegana = false;
 
     /**
@@ -76,15 +76,18 @@ class SapphireInlineParser implements InlineParserInterface
         // ルビを抽出
         // ルビが空だった場合はruby_charには空文字を入れる
         $cursor->advance();
-        $this->ruby_char = $cursor->getCharacter() === '》' ? '' : $cursor->match('/^[^》]+/u');
-        $this->ruby_char = $this->sutegana($this->ruby_char, $this->is_sutegana);
+        // $this->ruby_char = $cursor->getCharacter() === '》' ? '' : $cursor->match('/^[^》]+/u');
+        $this->ruby_char = $cursor->getCharacter() === '》' ? '' : $cursor->match('/^(.+?)(?=》)/u');
 
-        // 「》」がなかったらレストアしてfalseを返す
-        if ($cursor->isAtEnd()) {
+        // マッチングしなかったり、ルビ文字があるのに「》」がなかったらレストアしてfalseを返す
+        if ($this->ruby_char === null or $cursor->isAtEnd()) {
             $cursor->restoreState($restore);
 
             return false;
         }
+
+        // 捨て仮名フラグが立っていた場合は該当する文字列を置換する
+        $this->ruby_char = $this->sutegana($this->ruby_char, $this->is_sutegana);
 
         $inlineContext->getContainer()->appendChild(new RubyNode($this->ruby_char, ['delim' => true]));
 

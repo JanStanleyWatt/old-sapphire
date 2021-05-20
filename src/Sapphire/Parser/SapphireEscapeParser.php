@@ -18,8 +18,9 @@ class SapphireEscapeParser implements InlineParserInterface
         $cursor = $inlineContext->getCursor();
         $next_char = $cursor->peek();
 
-        // 後ろの文字がルビ記号でなかったらfalseを返す
-        if ($next_char !== '｜' and $next_char !== '《' and $next_char === null) {
+        // 後ろの文字がルビ記号やバックスラッシュでなかったらfalseを返す
+        if ($next_char !== '｜' and $next_char !== '《' and
+            $next_char !== '\\' and $next_char === null) {
             return false;
         }
         $cursor->advanceBy(2);

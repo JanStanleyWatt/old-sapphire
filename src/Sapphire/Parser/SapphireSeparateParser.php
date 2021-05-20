@@ -29,16 +29,26 @@ class SapphireSeparateParser implements InlineParserInterface
 
         $cursor->advance();
 
+        /**
+         * 行末近くのルビ記号「《》」にマッチングするまでカーソルを進めると共に、
+         * マッチングしたらアサーション以外の文字を文字列に加える.
+         */
         $parent_char = $cursor->match('/^(.+)(?=《(.+?)》.*?$)/u');
 
-        // 「《」が見つからなかったらレストアしてfalseを返す
-        // あるいはより後ろに「｜」を見つけたら処理をそちらに譲る
-        // それから「《」のエスケープも忘れずに
-        if ($cursor->isAtEnd()) {
+        /*
+         * ルビ記号が見つからなかったらレストアしてfalseを返す
+         * */
+        if ($parent_char === null or $cursor->isAtEnd()) {
             $cursor->restoreState($restore);
 
             return false;
-        } elseif (mb_ereg('(^([^\\\]+?)｜)|(\\\$)', $cursor->getPreviousText())) {
+        }
+        /*
+         * ルビ記号より前に区切り文字が見つかったら、そちらに処理を譲る
+         * また、ルビ記号「《」の手前にバックスラッシュを見つけたら
+         * 全部平文として解釈させる
+         */
+        if (mb_ereg_match('(.+)(?<!\\\)｜|(\\\$)', $cursor->getPreviousText())) {
             $cursor->restoreState($restore);
             $inlineContext->getContainer()->appendChild(new Text('｜'));
             $cursor->advance();
