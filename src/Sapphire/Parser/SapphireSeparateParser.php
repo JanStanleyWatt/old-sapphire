@@ -21,13 +21,16 @@ class SapphireSeparateParser implements InlineParserInterface
     {
         $cursor = $inlineContext->getCursor();
         $restore = $cursor->saveState();
+        $parent_char = '';
 
         if ($cursor->peek() === '《') {
             return false;
         }
 
         $cursor->advance();
-        $parent_char = $cursor->match('/^[^《]+/u');
+
+        $parent_char = $cursor->match('/^(.+)(?=《(.+?)》.*?$)/u');
+
         // 「《」が見つからなかったらレストアしてfalseを返す
         // あるいはより後ろに「｜」を見つけたら処理をそちらに譲る
         // それから「《」のエスケープも忘れずに
@@ -42,15 +45,8 @@ class SapphireSeparateParser implements InlineParserInterface
 
             return true;
         }
-        // elseif (mb_ereg_match('(^(.+?)｜)|(\\\$)', $cursor->getPreviousText())) {
-        //     $cursor->restoreState($restore);
-        //     $inlineContext->getContainer()->appendChild(new Text('｜'));
-        //     $cursor->advance();
 
-        //     return true;
-        // }
-
-        $parent_char = str_replace('\\', '', $parent_char);
+        $parent_char = str_replace('\\｜', '｜', str_replace('\\《', '《', $parent_char));
         $inlineContext->getContainer()->appendChild(new RubyParentNode($parent_char));
 
         return true;
