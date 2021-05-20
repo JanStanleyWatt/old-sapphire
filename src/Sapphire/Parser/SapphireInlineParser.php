@@ -63,9 +63,7 @@ class SapphireInlineParser implements InlineParserInterface
      */
     public function parse(InlineParserContext $inlineContext): bool
     {
-        $parent_pattern = new SapphireKugiri();
         $cursor = $inlineContext->getCursor();
-        $start_index = $cursor->getPosition() + 1;
         $restore = $cursor->saveState();
 
         // 不正な構文を弾く
