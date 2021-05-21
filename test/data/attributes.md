@@ -6,4 +6,4 @@
 * 仮想化《かそうか》{.rubi-technical .rubi-common}
 * 例《れい》{#id .class .another-class lang=ja}
 
-これは青空文庫の公式仕様ではなくAozoraRubyTextTraitの独自拡張です。
+これは青空文庫の公式仕様ではなくLeague\\CommonMarkの拡張機能を利用しました。
