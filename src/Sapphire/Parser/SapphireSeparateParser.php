@@ -48,7 +48,7 @@ class SapphireSeparateParser implements InlineParserInterface
          * また、ルビ記号「《」の手前にバックスラッシュを見つけたら
          * 全部平文として解釈させる
          */
-        if (preg_match('/(.+)(?<!\\\)((\\\)(\\\))*｜/u', $cursor->getPreviousText())) {
+        if (preg_match('/(.+)(?<!\\\)((\\\)(\\\))*｜|(\\\$)/u', $cursor->getPreviousText())) {
             $cursor->restoreState($restore);
             $inlineContext->getContainer()->appendChild(new Text('｜'));
             $cursor->advance();
@@ -56,7 +56,7 @@ class SapphireSeparateParser implements InlineParserInterface
             return true;
         }
 
-        $parent_char = str_replace('\\｜', '｜', str_replace('\\《', '《', $parent_char));
+        $parent_char = str_replace('\｜', '｜', str_replace('\《', '《', $parent_char));
         $inlineContext->getContainer()->appendChild(new RubyParentNode($parent_char));
 
         return true;
