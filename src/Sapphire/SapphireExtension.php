@@ -19,6 +19,7 @@ use Whojinn\Sapphire\Renderer\SapphireInlineRenderer;
  *
  * 独自コンフィグ
  * sutegana: ルビ内の特定の小文字を大文字にするか否か(デフォルトはfalse)
+ * rp_tag: ルビ非対応ブラウザにて代替表現を提供する<rp>タグをつけるか否か(デフォルトはfalse)
  */
 class SapphireExtension implements ExtensionInterface
 {
