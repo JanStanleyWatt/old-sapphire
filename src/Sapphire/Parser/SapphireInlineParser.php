@@ -5,12 +5,9 @@ namespace Whojinn\Sapphire\Parser;
 use League\CommonMark\Inline\Parser\InlineParserInterface;
 use League\CommonMark\InlineParserContext;
 use Whojinn\Sapphire\Node\RubyNode;
-use Whojinn\Sapphire\Node\RubyParentNode;
 
 class SapphireInlineParser implements InlineParserInterface
 {
-    private static int $ruby_nest = 0;
-    private static int $nest_limit = 1;
     private ?string $ruby_char;
     private bool $is_sutegana = false;
 
@@ -47,10 +44,9 @@ class SapphireInlineParser implements InlineParserInterface
      *
      * @param bool $is_sutegana trueにすると小文字を大文字に変換する
      */
-    public function __construct(bool $is_sutegana, int $limit = 0)
+    public function __construct(bool $is_sutegana)
     {
         $this->is_sutegana = $is_sutegana;
-        self::$nest_limit = $limit;
     }
 
     /**
@@ -69,44 +65,19 @@ class SapphireInlineParser implements InlineParserInterface
         $cursor = $inlineContext->getCursor();
         $restore = $cursor->saveState();
 
-        //　ネストをプラス
-        self::$ruby_nest += 1;
-
         // 不正な構文を弾く
         if ($cursor->isAtEnd() or $cursor->getPosition() === 0 or $cursor->peek(-1) === '｜') {
-            //　関数を抜けるときはネスト数を引く
-            self::$ruby_nest -= 1;
-
             return false;
         }
 
-
-        $cursor->advance();
-        
-        // 「《」が見つかったら、ネスト数を足してparseを再帰呼出する
-        if ($cursor->match('/^(.+?)(?=《)/u') !== null) {
-            
-            //再帰呼出
-            if(self::$ruby_nest <= self::$nest_limit){
-                //　ネストをプラス
-                self::$ruby_nest += 1;
-                $inlineContext->getContainer()->appendChild(new RubyParentNode($cursor->getPreviousText()));
-                
-                $cursor->advance();
-                $this->parse($inlineContext);
-            }
-        }
-        
         // ルビを抽出
         // ルビが空だった場合はruby_charには空文字を入れる
+        $cursor->advance();
         $this->ruby_char = $cursor->getCharacter() === '》' ? '' : $cursor->match('/^(.+?)(?=》)/u');
 
         // マッチングしなかったり、ルビ文字があるのに「》」がなかったらレストアしてfalseを返す
         if ($this->ruby_char === null or $cursor->isAtEnd()) {
             $cursor->restoreState($restore);
-
-            //　関数を抜けるときはネスト数を引く
-            self::$ruby_nest -= 1;
 
             return false;
         }
@@ -114,13 +85,10 @@ class SapphireInlineParser implements InlineParserInterface
         // 捨て仮名フラグが立っていた場合は該当する文字列を置換する
         $this->ruby_char = $this->sutegana($this->ruby_char, $this->is_sutegana);
 
-
         $inlineContext->getContainer()->appendChild(new RubyNode($this->ruby_char, ['delim' => true]));
 
         $cursor->advance();
 
-        //　関数を抜けるときはネスト数を引く
-        self::$ruby_nest -= 1;
         return true;
     }
 }
