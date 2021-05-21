@@ -30,6 +30,12 @@ class SapphireInlineRenderer implements InlineRendererInterface
         assert(count($parent) === count($ruby));
         for ($i = 0; $i < count($ruby); ++$i) {
             $string_array .= $parent[$i];
+
+            // ルビが空の場合は空の<rt>タグを入れる
+            if ($ruby[$i] === '') {
+                $string_array .= '<rt></rt>';
+                continue;
+            }
             $string_array .= $flag ? '<rp>（</rp><rt>'.$ruby[$i].'</rt><rp>）</rp>' : '<rt>'.$ruby[$i].'</rt>';
         }
 
