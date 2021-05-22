@@ -1,4 +1,19 @@
 {
+    "name": "whojinn/sapphire",
+    
+    "authors": [
+        {
+            "name": "whojinn",
+            "email": "whojin.message@gmail.com"
+        }
+    ],
+    
+    "keywords": ["league/commonmark"],
+    
+    "description": "League/commonmark extension for japanese furigana.",
+    
+    "license": "Apache License Version 2.0",
+    
     "require": {
         "league/commonmark":"1.6.*",
         "php": "^7.1 || ^8.0",
