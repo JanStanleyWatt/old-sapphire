@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fde565862b8bca4ea81ca91f5848d923",
+    "content-hash": "7e369295dbe428f3108d4266bf24ce7f",
     "packages": [
         {
             "name": "league/commonmark",
