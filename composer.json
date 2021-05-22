@@ -12,7 +12,7 @@
     
     "description": "League/commonmark extension for japanese furigana.",
     
-    "license": "Apache License 2.0",
+    "license": "Apache-2.0",
     
     "require": {
         "league/commonmark":"1.6.*",
