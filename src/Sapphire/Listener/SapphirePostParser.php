@@ -19,6 +19,7 @@ class SapphirePostParser
     {
         $walker = $event->getDocument()->walker();
         $parent_pattern = new SapphireKugiri();
+        $parent_char = '';
 
         while ($event = $walker->next()) {
             $node = $event->getNode();
@@ -28,7 +29,7 @@ class SapphirePostParser
                 $node->detach();
             }
 
-            if (($node instanceof Text) and $node->next() instanceof RubyNode) {
+            if ($node instanceof Text and $node->next() instanceof RubyNode) {
                 $tmp = $node->getContent();
                 foreach ($parent_pattern->getKugiri() as $pattern) {
                     if (mb_ereg($pattern, $tmp, $matches)) {
@@ -39,7 +40,7 @@ class SapphirePostParser
                 }// foreach終端
             }// if Text終端
 
-            if ($node instanceof RubyNode) {
+            if ($node instanceof RubyNode and $node->getParentString() === '') {
                 $node->setParentString($parent_char);
                 $parent_char = '';
             }
