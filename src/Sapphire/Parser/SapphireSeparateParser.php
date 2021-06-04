@@ -48,7 +48,7 @@ class SapphireSeparateParser implements InlineParserInterface
          * 行末近くのルビ記号「《》」にマッチングするまでカーソルを進めると共に、
          * マッチングしたらアサーション以外の文字を文字列に加える.
          */
-        $parent_char = $cursor->match('/^(.+)(?=《(.+?)》.*?$)/u');
+        $parent_char = $cursor->match('/^(.+?)(?=(?<!\\\)《)/u');
 
         /*
          * ルビ記号が見つからなかったらレストアしてfalseを返す
