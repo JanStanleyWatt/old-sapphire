@@ -45,7 +45,7 @@ class SapphireSeparateParser implements InlineParserInterface
         $cursor->advance();
 
         /**
-         * 行末近くのルビ記号「《》」にマッチングするまでカーソルを進めると共に、
+         * 行末近くのエスケープされていないルビ記号「《」にマッチングするまでカーソルを進めると共に、
          * マッチングしたらアサーション以外の文字を文字列に加える.
          */
         $parent_char = $cursor->match('/^(.+?)(?=(?<!\\\)《)/u');
@@ -60,10 +60,8 @@ class SapphireSeparateParser implements InlineParserInterface
         }
         /*
          * ルビ記号より前に区切り文字が見つかったら、そちらに処理を譲る
-         * また、ルビ記号「《」の手前にバックスラッシュを見つけたら
-         * 全部平文として解釈させる
          */
-        if (preg_match('/(.+)(?<!\\\)((\\\)(\\\))*｜|(\\\$)/u', $cursor->getPreviousText())) {
+        if (preg_match('/(.+)(?<!\\\)((\\\)(\\\))*｜/u', $cursor->getPreviousText())) {
             $cursor->restoreState($restore);
             $inlineContext->getContainer()->appendChild(new Text('｜'));
             $cursor->advance();
