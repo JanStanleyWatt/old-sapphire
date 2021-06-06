@@ -27,8 +27,8 @@ $environment->addExtension(new CommonMarkCoreExtension());
 $environment->addExtension(new SapphireExtension());
 $environment->mergeConfig([
     'sapphire' => [
-        'sutegana' => false,    // trueにすると、特定の小文字が大文字になる
-        'rp_tag' => false,      // trueにすると、<rp>タグがルビにつく
+        'sutegana' => false,    // trueにすると、ルビ文字のうち特定の小文字が大文字になる(ゅ→ゆ、ぁ→あ...etc)
+        'rp_tag' => false,      // trueにすると、<rp>タグがルビにつく(<rp>（</rp><rt>ルビ</rt><rp>）</rp>)
     ],
 ]);
 
