@@ -45,7 +45,7 @@ $config = [
 ];
 ```
 
-### ライセンス
+## ライセンス
 Apache License, Version 2.0  
 - [英語原文](https://www.apache.org/licenses/LICENSE-2.0)
 - [日本語参考訳](https://licenses.opensource.jp/Apache-2.0/Apache-2.0.html)
