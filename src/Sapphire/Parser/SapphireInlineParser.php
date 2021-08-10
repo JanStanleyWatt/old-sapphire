@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2021 whojinn
 
@@ -17,14 +18,17 @@
 
 namespace Whojinn\Sapphire\Parser;
 
-use League\CommonMark\Inline\Parser\InlineParserInterface;
-use League\CommonMark\InlineParserContext;
+use League\CommonMark\Parser\Inline\InlineParserInterface;
+use League\CommonMark\Parser\Inline\InlineParserMatch;
+use League\CommonMark\Parser\InlineParserContext;
+use League\Config\ConfigurationAwareInterface;
+use League\Config\ConfigurationInterface;
 use Whojinn\Sapphire\Node\RubyNode;
 
-class SapphireInlineParser implements InlineParserInterface
+class SapphireInlineParser implements InlineParserInterface, ConfigurationAwareInterface
 {
     private ?string $ruby_char;
-    private bool $is_sutegana = false;
+    private $config;
 
     /**
      * 捨て仮名を大文字に置換する関数。
@@ -55,21 +59,19 @@ class SapphireInlineParser implements InlineParserInterface
     }
 
     /**
-     * コンストラクタ
-     *
-     * @param bool $is_sutegana trueにすると小文字を大文字に変換する
+     * ConfigurationAwareInterfaceの実装。
      */
-    public function __construct(bool $is_sutegana)
+    public function setConfiguration(ConfigurationInterface $configuration): void
     {
-        $this->is_sutegana = $is_sutegana;
+        $this->config = $configuration;
     }
 
     /**
      * パースの開始地点となる文字を定義.
      */
-    public function getCharacters(): array
+    public function getMatchDefinition(): InlineParserMatch
     {
-        return ['《'];
+        return InlineParserMatch::string('《');
     }
 
     /**
@@ -98,9 +100,9 @@ class SapphireInlineParser implements InlineParserInterface
         }
 
         // 捨て仮名フラグが立っていた場合は該当する文字列を置換する
-        $this->ruby_char = $this->sutegana($this->ruby_char, $this->is_sutegana);
+        $this->ruby_char = $this->sutegana($this->ruby_char, $this->config->get('sapphire/use_sutegana'));
 
-        $inlineContext->getContainer()->appendChild(new RubyNode($this->ruby_char, ['delim' => true]));
+        $inlineContext->getContainer()->appendChild(new RubyNode($this->ruby_char));
 
         $cursor->advance();
 

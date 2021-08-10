@@ -17,15 +17,16 @@
 
 namespace Whojinn\Sapphire\Parser;
 
-use League\CommonMark\Inline\Element\Text;
-use League\CommonMark\Inline\Parser\InlineParserInterface;
-use League\CommonMark\InlineParserContext;
+use League\CommonMark\Node\Inline\Text;
+use League\CommonMark\Parser\Inline\InlineParserInterface;
+use League\CommonMark\Parser\Inline\InlineParserMatch;
+use League\CommonMark\Parser\InlineParserContext;
 
 class SapphireEscapeParser implements InlineParserInterface
 {
-    public function getCharacters(): array
+    public function getMatchDefinition(): InlineParserMatch
     {
-        return ['\\'];
+        return InlineParserMatch::string('\\');
     }
 
     public function parse(InlineParserContext $inlineContext): bool

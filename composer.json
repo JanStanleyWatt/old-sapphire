@@ -15,7 +15,7 @@
     "license": "Apache-2.0",
     
     "require": {
-        "league/commonmark":"1.6.*",
+        "league/commonmark":"2.*",
         "php": "^7.1 || ^8.0",
         "ext-mbstring": "*"
     },

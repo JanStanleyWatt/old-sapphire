@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2021 whojinn
 
@@ -17,18 +18,17 @@
 
 namespace Whojinn\Sapphire\Renderer;
 
-use League\CommonMark\ElementRendererInterface;
-use League\CommonMark\HtmlElement;
-use League\CommonMark\Inline\Element\AbstractInline;
-use League\CommonMark\Inline\Renderer\InlineRendererInterface;
+use League\CommonMark\Node\Node;
+use League\CommonMark\Renderer\ChildNodeRendererInterface;
+use League\CommonMark\Renderer\NodeRendererInterface;
+use League\CommonMark\Util\HtmlElement;
+use League\Config\ConfigurationAwareInterface;
+use League\Config\ConfigurationInterface;
 use Whojinn\Sapphire\Node\RubyNode;
 
-class SapphireInlineRenderer implements InlineRendererInterface
+class SapphireInlineRenderer implements NodeRendererInterface, ConfigurationAwareInterface
 {
-    /**
-     * <rp>タグをつけるか否か.
-     */
-    private bool $is_set_rp = false;
+    private $config;
 
     /**
      * ルビと親文字を分割できるのであれば分割する。
@@ -39,9 +39,11 @@ class SapphireInlineRenderer implements InlineRendererInterface
         return strpos($ruby, ' ') ? mb_split(' ', $ruby) : [$ruby];
     }
 
-    private function mergeElement(array $parent, array $ruby, bool $flag = false): string
+    private function mergeElement(array $parent, array $ruby): string
     {
         $string_array = '';
+        $flag = $this->config->get('sapphire/use_rp_tag');
+
         assert(count($parent) === count($ruby));
         for ($i = 0; $i < count($ruby); ++$i) {
             $string_array .= $parent[$i];
@@ -57,33 +59,34 @@ class SapphireInlineRenderer implements InlineRendererInterface
         return $string_array;
     }
 
-    public function __construct(bool $flag = false)
+    /**
+     * ConfigurationAwareInterfaceの実装。
+     */
+    public function setConfiguration(ConfigurationInterface $configuration): void
     {
-        $this->is_set_rp = $flag;
+        $this->config = $configuration;
     }
 
-    public function render(AbstractInline $inline, ElementRendererInterface $htmlRenderer)
+    public function render(Node $node, ChildNodeRendererInterface $childRenderer)
     {
         $parent_array = [];
         $ruby_array = [];
 
         // RubyNode以外は処理しない
-        if (!($inline instanceof RubyNode)) {
-            throw new \InvalidArgumentException('Incompatible inline type: '.get_class($inline));
+        if ($node instanceof RubyNode) {
+            // ルビ配列の数と頭文字の数が同じならば頭文字を文字ごとに分解する
+            if (count($this->devideRuby($node->getRubyString())) === mb_strlen($node->getParentString())) {
+                $parent_array = mb_str_split($node->getParentString());
+                $ruby_array = mb_split(' ', $node->getRubyString());
+            } else {
+                $parent_array = [$node->getParentString()];
+                $ruby_array = [$node->getRubyString()];
+            }
         }
-
-        // ルビ配列の数と頭文字の数が同じならば頭文字を文字ごとに分解する
-        if (count($this->devideRuby($inline->getRubyString())) === mb_strlen($inline->getParentString())) {
-            $parent_array = mb_str_split($inline->getParentString());
-            $ruby_array = mb_split(' ', $inline->getRubyString());
-        } else {
-            $parent_array = [$inline->getParentString()];
-            $ruby_array = [$inline->getRubyString()];
-        }
-
-        $attrs = $inline->getData('attributes', []);
 
         // 出力
-        return new HtmlElement('ruby', $attrs, $this->mergeElement($parent_array, $ruby_array, $this->is_set_rp));
+        $attrs = $node->data->get('attributes');
+
+        return new HtmlElement('ruby', $attrs, $this->mergeElement($parent_array, $ruby_array));
     }
 }

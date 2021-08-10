@@ -17,7 +17,7 @@
 
 namespace Whojinn\Sapphire\Node;
 
-use League\CommonMark\Inline\Element\AbstractStringContainer;
+use League\CommonMark\Node\Inline\AbstractStringContainer;
 
 /**
  * <ruby>タグを担当するノード。
@@ -29,8 +29,8 @@ class RubyNode extends AbstractStringContainer
 
     public function __construct(string $ruby_char, array $data = [])
     {
+        parent::__construct($ruby_char, $data);
         $this->ruby_char = $ruby_char;
-        $this->data = $data;
     }
 
     public function setParentString(string $parent_char)

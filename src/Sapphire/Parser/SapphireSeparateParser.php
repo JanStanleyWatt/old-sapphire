@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2021 whojinn
 
@@ -17,9 +18,10 @@
 
 namespace Whojinn\Sapphire\Parser;
 
-use League\CommonMark\Inline\Element\Text;
-use League\CommonMark\Inline\Parser\InlineParserInterface;
-use League\CommonMark\InlineParserContext;
+use League\CommonMark\Node\Inline\Text;
+use League\CommonMark\Parser\Inline\InlineParserInterface;
+use League\CommonMark\Parser\Inline\InlineParserMatch;
+use League\CommonMark\Parser\InlineParserContext;
 use Whojinn\Sapphire\Node\RubyParentNode;
 
 /**
@@ -27,9 +29,9 @@ use Whojinn\Sapphire\Node\RubyParentNode;
  */
 class SapphireSeparateParser implements InlineParserInterface
 {
-    public function getCharacters(): array
+    public function getMatchDefinition(): InlineParserMatch
     {
-        return ['｜'];
+        return InlineParserMatch::string('｜');
     }
 
     public function parse(InlineParserContext $inlineContext): bool
@@ -69,7 +71,9 @@ class SapphireSeparateParser implements InlineParserInterface
             return true;
         }
 
+        // 頭文字からエスケープ文字を除く(一つだけ)
         $parent_char = str_replace('\｜', '｜', str_replace('\《', '《', $parent_char));
+
         $inlineContext->getContainer()->appendChild(new RubyParentNode($parent_char));
 
         return true;

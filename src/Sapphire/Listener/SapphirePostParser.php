@@ -18,7 +18,7 @@
 namespace Whojinn\Sapphire\Listener;
 
 use League\CommonMark\Event\DocumentParsedEvent;
-use League\CommonMark\Inline\Element\Text;
+use League\CommonMark\Node\Inline\Text;
 use Whojinn\Sapphire\Node\RubyNode;
 use Whojinn\Sapphire\Node\RubyParentNode;
 use Whojinn\Sapphire\Util\SapphireKugiri;
@@ -40,15 +40,15 @@ class SapphirePostParser
             $node = $event->getNode();
 
             if ($node instanceof RubyParentNode) {
-                $parent_char = $node->getContent();
+                $parent_char = $node->getLiteral();
                 $node->detach();
             }
 
             if ($node instanceof Text and $node->next() instanceof RubyNode) {
-                $tmp = $node->getContent();
+                $tmp = $node->getLiteral();
                 foreach ($parent_pattern->getKugiri() as $pattern) {
                     if (mb_ereg($pattern, $tmp, $matches)) {
-                        $node->setContent(mb_ereg_replace($pattern, '', $tmp));
+                        $node->setLiteral(mb_ereg_replace($pattern, '', $tmp));
                         $parent_char = $matches[0];
                         break;
                     }

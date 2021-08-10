@@ -16,21 +16,22 @@
  */
 require_once __DIR__.'/vendor/autoload.php';
 
-use League\CommonMark\Environment;
-use League\CommonMark\Extension\CommonMarkCoreExtension;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\MarkdownConverter;
 use Whojinn\Sapphire\SapphireExtension;
 
-$environment = new Environment();
+$config = [
+    'sapphire' => [
+        'use_sutegana' => false,    // trueにすると、ルビ文字のうち特定の小文字が大文字になる(ゅ→ゆ、ぁ→あ...etc)
+        'use_rp_tag' => false,      // trueにすると、<rp>タグがルビにつく(<rp>（</rp><rt>ルビ</rt><rp>）</rp>)
+    ],
+];
+
+$environment = new Environment($config);
 
 $environment->addExtension(new CommonMarkCoreExtension());
 $environment->addExtension(new SapphireExtension());
-$environment->mergeConfig([
-    'sapphire' => [
-        'sutegana' => false,    // trueにすると、ルビ文字のうち特定の小文字が大文字になる(ゅ→ゆ、ぁ→あ...etc)
-        'rp_tag' => false,      // trueにすると、<rp>タグがルビにつく(<rp>（</rp><rt>ルビ</rt><rp>）</rp>)
-    ],
-]);
 
 $converter = new MarkdownConverter($environment);
 
