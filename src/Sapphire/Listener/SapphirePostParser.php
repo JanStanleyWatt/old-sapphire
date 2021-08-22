@@ -32,13 +32,11 @@ class SapphirePostParser
 {
     public function postParse(DocumentParsedEvent $event)
     {
-        $walker = $event->getDocument()->walker();
+        $walker = $event->getDocument()->iterator();
         $parent_pattern = new SapphireKugiri();
         $parent_char = '';
 
-        while ($event = $walker->next()) {
-            $node = $event->getNode();
-
+        foreach ($walker as $node) {
             if ($node instanceof RubyParentNode) {
                 $parent_char = $node->getLiteral();
                 $node->detach();
