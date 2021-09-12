@@ -48,7 +48,7 @@ class SapphireExtension implements ConfigurableExtensionInterface
             Expect::structure([
                 'use_sutegana' => Expect::bool()->default(false),
                 'use_rp_tag' => Expect::bool()->default(false),
-                'use_danraku_zenkaku' => Expect::bool()->default(false),
+                'use_danraku_atama' => Expect::bool()->default(false),
             ])
         );
     }
@@ -60,7 +60,7 @@ class SapphireExtension implements ConfigurableExtensionInterface
             ->addInlineParser(new SapphireSeparateParser(), 100)
             ->addInlineParser(new SapphireEscapeParser(), 100)
             ->addInlineParser(new SapphireInlineParser())
-            // ->addEventListener(DocumentPreParsedEvent::class, [new SapphirePreParser(), 'preParse'])
+            ->addEventListener(DocumentPreParsedEvent::class, [new SapphirePreParser(), 'preParse'])
             ->addEventListener(DocumentParsedEvent::class, [new SapphirePostParser(), 'postParse'])
             ->addRenderer(RubyNode::class, new SapphireInlineRenderer());
     }

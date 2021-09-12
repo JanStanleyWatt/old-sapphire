@@ -20,19 +20,26 @@ declare(strict_types=1);
 namespace Whojinn\Sapphire\Listener;
 
 use League\CommonMark\Event\DocumentPreParsedEvent;
+use League\Config\ConfigurationAwareInterface;
+use League\Config\ConfigurationInterface;
 
 /**
  * パース前のマークダウンに対して処理を行うためのクラス。
  * 必要になったらなにか作る予定.
  */
-class SapphirePreParser
+class SapphirePreParser implements ConfigurationAwareInterface
 {
     private $config;
+    
+    public function setConfiguration(ConfigurationInterface $configuration): void
+    {
+        $this->config = $configuration;
+    }
 
     public function preParse(DocumentPreParsedEvent $event)
     {
         foreach ($event->getMarkdown()->getLines() as $markdown) {
-            if ($this->config->get('sapphire/use_danraku_zenkaku') && mb_ereg('^[^\p{blank}]', $markdown)) {
+            if ($this->config->get('sapphire/use_danraku_atama') && mb_ereg('^[^\p{blank}]', $markdown)) {
                 $markdown = '　'.$markdown;
             }
         }
