@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright 2021 whojinn
 
@@ -35,8 +35,8 @@ class SapphireEscapeParser implements InlineParserInterface
         $next_char = $cursor->peek();
 
         // 後ろの文字がルビ記号やバックスラッシュでなかったらfalseを返す
-        if ($next_char !== '｜' and $next_char !== '《' and
-            $next_char !== '\\' and $next_char === null) {
+        if ($next_char !== '｜' && $next_char !== '《' &&
+            $next_char !== '\\' && $next_char === null) {
             return false;
         }
         $cursor->advanceBy(2);

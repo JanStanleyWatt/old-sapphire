@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Copyright 2021 whojinn
 
@@ -25,9 +27,14 @@ use League\CommonMark\Event\DocumentPreParsedEvent;
  */
 class SapphirePreParser
 {
-    // public function preParse(DocumentPreParsedEvent $event)
-    // {
-    //     foreach ($event->getMarkdown()->getLines() as $markdown) {
-    //     }
-    // }
+    private $config;
+
+    public function preParse(DocumentPreParsedEvent $event)
+    {
+        foreach ($event->getMarkdown()->getLines() as $markdown) {
+            if ($this->config->get('sapphire/use_danraku_zenkaku') && mb_ereg('^[^\p{blank}]', $markdown)) {
+                $markdown = '　'.$markdown;
+            }
+        }
+    }
 }

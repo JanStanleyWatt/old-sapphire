@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2021 whojinn
@@ -25,6 +25,8 @@ use League\CommonMark\Util\HtmlElement;
 use League\Config\ConfigurationAwareInterface;
 use League\Config\ConfigurationInterface;
 use Whojinn\Sapphire\Node\RubyNode;
+use function assert;
+use function count;
 
 class SapphireInlineRenderer implements NodeRendererInterface, ConfigurationAwareInterface
 {

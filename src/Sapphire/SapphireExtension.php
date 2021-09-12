@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2021 whojinn
@@ -48,6 +48,7 @@ class SapphireExtension implements ConfigurableExtensionInterface
             Expect::structure([
                 'use_sutegana' => Expect::bool()->default(false),
                 'use_rp_tag' => Expect::bool()->default(false),
+                'use_danraku_zenkaku' => Expect::bool()->default(false),
             ])
         );
     }

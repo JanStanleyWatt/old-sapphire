@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2021 whojinn
@@ -83,7 +83,7 @@ class SapphireInlineParser implements InlineParserInterface, ConfigurationAwareI
         $restore = $cursor->saveState();
 
         // 不正な構文を弾く
-        if ($cursor->isAtEnd() or $cursor->getPosition() === 0 or $cursor->peek(-1) === '｜') {
+        if ($cursor->isAtEnd() || $cursor->getPosition() === 0 || $cursor->peek(-1) === '｜') {
             return false;
         }
 
@@ -93,7 +93,7 @@ class SapphireInlineParser implements InlineParserInterface, ConfigurationAwareI
         $this->ruby_char = $cursor->getCharacter() === '》' ? '' : $cursor->match('/^(.+?)(?=》)/u');
 
         // マッチングしなかったり、ルビ文字があるのに「》」がなかったらレストアしてfalseを返す
-        if ($this->ruby_char === null or $cursor->isAtEnd()) {
+        if ($this->ruby_char === null || $cursor->isAtEnd()) {
             $cursor->restoreState($restore);
 
             return false;

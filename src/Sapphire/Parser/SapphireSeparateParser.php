@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 /**
  * Copyright 2021 whojinn
@@ -55,7 +55,7 @@ class SapphireSeparateParser implements InlineParserInterface
         /*
          * ルビ記号が見つからなかったらレストアしてfalseを返す
          * */
-        if ($parent_char === null or $cursor->isAtEnd()) {
+        if ($parent_char === null || $cursor->isAtEnd()) {
             $cursor->restoreState($restore);
 
             return false;

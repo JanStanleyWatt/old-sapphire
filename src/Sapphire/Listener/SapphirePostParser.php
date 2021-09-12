@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * Copyright 2021 whojinn
 
@@ -42,7 +42,7 @@ class SapphirePostParser
                 $node->detach();
             }
 
-            if ($node instanceof Text and $node->next() instanceof RubyNode) {
+            if ($node instanceof Text && $node->next() instanceof RubyNode) {
                 $tmp = $node->getLiteral();
                 foreach ($parent_pattern->getKugiri() as $pattern) {
                     if (mb_ereg($pattern, $tmp, $matches)) {
@@ -53,7 +53,7 @@ class SapphirePostParser
                 }// foreach終端
             }// if Text終端
 
-            if ($node instanceof RubyNode and $node->getParentString() === '') {
+            if ($node instanceof RubyNode && $node->getParentString() === '') {
                 $node->setParentString($parent_char);
                 $parent_char = '';
             }
