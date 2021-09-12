@@ -15,9 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Whojinn\Sapphire\Renderer;
 
+use function assert;
+use function count;
 use League\CommonMark\Node\Node;
 use League\CommonMark\Renderer\ChildNodeRendererInterface;
 use League\CommonMark\Renderer\NodeRendererInterface;
@@ -25,8 +26,6 @@ use League\CommonMark\Util\HtmlElement;
 use League\Config\ConfigurationAwareInterface;
 use League\Config\ConfigurationInterface;
 use Whojinn\Sapphire\Node\RubyNode;
-use function assert;
-use function count;
 
 class SapphireInlineRenderer implements NodeRendererInterface, ConfigurationAwareInterface
 {
@@ -53,6 +52,7 @@ class SapphireInlineRenderer implements NodeRendererInterface, ConfigurationAwar
             // ルビが空の場合は空の<rt>タグを入れる
             if ($ruby[$i] === '') {
                 $string_array .= '<rt></rt>';
+
                 continue;
             }
             $string_array .= $flag ? '<rp>（</rp><rt>'.$ruby[$i].'</rt><rp>）</rp>' : '<rt>'.$ruby[$i].'</rt>';

@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Whojinn\Sapphire\Node;
 
 use League\CommonMark\Node\Inline\AbstractStringContainer;

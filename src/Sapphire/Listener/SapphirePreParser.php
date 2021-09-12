@@ -38,10 +38,14 @@ class SapphirePreParser implements ConfigurationAwareInterface
 
     public function preParse(DocumentPreParsedEvent $event)
     {
-        foreach ($event->getMarkdown()->getLines() as $markdown) {
-            if ($this->config->get('sapphire/use_danraku_atama') && mb_ereg('^[^\p{blank}]', $markdown)) {
-                $markdown = '　'.$markdown;
+        $document = $event->getMarkdown();
+        
+        foreach ($document->getLines() as $markdown) {
+            if ($this->config->get('sapphire/use_danraku_atama')) {
+                mb_ereg_replace('^', 'あ、', $markdown);
             }
         }
+        echo $document->getContent()."\n";
+        $event->replaceMarkdown($document);
     }
 }

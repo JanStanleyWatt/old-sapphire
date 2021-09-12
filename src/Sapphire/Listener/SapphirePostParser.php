@@ -14,11 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Whojinn\Sapphire\Listener;
 
 use League\CommonMark\Event\DocumentParsedEvent;
 use League\CommonMark\Node\Inline\Text;
+use League\Config\ConfigurationInterface;
 use Whojinn\Sapphire\Node\RubyNode;
 use Whojinn\Sapphire\Node\RubyParentNode;
 use Whojinn\Sapphire\Util\SapphireKugiri;
@@ -30,6 +30,13 @@ use Whojinn\Sapphire\Util\SapphireKugiri;
  */
 class SapphirePostParser
 {
+    private $config;
+
+    public function setConfiguration(ConfigurationInterface $configuration): void
+    {
+        $this->config = $configuration;
+    }
+
     public function postParse(DocumentParsedEvent $event)
     {
         $walker = $event->getDocument()->iterator();
@@ -48,6 +55,7 @@ class SapphirePostParser
                     if (mb_ereg($pattern, $tmp, $matches)) {
                         $node->setLiteral(mb_ereg_replace($pattern, '', $tmp));
                         $parent_char = $matches[0];
+
                         break;
                     }
                 }// foreach終端
