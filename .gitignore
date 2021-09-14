@@ -1,3 +1,6 @@
 vendor/
 test.*
 test/.phpunit.result.cache
+.php-cs-fixer.cache
+.php-cs-fixer.dist.php
+.vscode/
