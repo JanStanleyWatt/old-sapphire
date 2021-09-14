@@ -16,36 +16,17 @@ declare(strict_types=1);
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace Whojinn\Sapphire\Listener;
 
 use League\CommonMark\Event\DocumentPreParsedEvent;
-use League\Config\ConfigurationAwareInterface;
-use League\Config\ConfigurationInterface;
 
-/**
- * パース前のマークダウンに対して処理を行うためのクラス。
+/*
+ * パース前のMarkdownに対して処理を行うためのクラス。
  * 必要になったらなにか作る予定.
  */
-class SapphirePreParser implements ConfigurationAwareInterface
-{
-    private $config;
-    
-    public function setConfiguration(ConfigurationInterface $configuration): void
-    {
-        $this->config = $configuration;
-    }
-
-    public function preParse(DocumentPreParsedEvent $event)
-    {
-        $document = $event->getMarkdown();
-        
-        foreach ($document->getLines() as $markdown) {
-            if ($this->config->get('sapphire/use_danraku_atama')) {
-                mb_ereg_replace('^', 'あ、', $markdown);
-            }
-        }
-        echo $document->getContent()."\n";
-        $event->replaceMarkdown($document);
-    }
-}
+// class SapphirePreParser
+// {
+//     public function preParse(DocumentPreParsedEvent $event)
+//     {
+//     }
+// }
