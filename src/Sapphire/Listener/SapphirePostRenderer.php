@@ -9,6 +9,7 @@ use League\Config\ConfigurationInterface;
 class SapphirePostRenderer implements ConfigurationAwareInterface
 {
     private $config;
+    private $pattern = '<p>(?:(<[(a)|(b)|(em)|(strong)|(code)|(del)|(dfn)|(mark)|(ruby)]>))';
 
     public function setConfiguration(ConfigurationInterface $configuration): void
     {
@@ -23,7 +24,7 @@ class SapphirePostRenderer implements ConfigurationAwareInterface
             $document = $event->getOutput()->getDocument();
             $replaced ="";
 
-            $replaced .= mb_ereg_replace('<p>(?!(<.*?>))', "<p>　", $html);
+            $replaced .= mb_ereg_replace($this->pattern, "<p>　", $html);
 
             $event->replaceOutput(new RenderedContent($document, $replaced));
         }
