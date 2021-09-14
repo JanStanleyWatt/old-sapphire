@@ -20,10 +20,12 @@ namespace Whojinn\Sapphire;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Event\DocumentParsedEvent;
 use League\CommonMark\Event\DocumentPreParsedEvent;
+use League\CommonMark\Event\DocumentRenderedEvent;
 use League\CommonMark\Extension\ConfigurableExtensionInterface;
 use League\Config\ConfigurationBuilderInterface;
 use Nette\Schema\Expect;
 use Whojinn\Sapphire\Listener\SapphirePostParser;
+use Whojinn\Sapphire\Listener\SapphirePostRenderer;
 use Whojinn\Sapphire\Listener\SapphirePreParser;
 use Whojinn\Sapphire\Node\RubyNode;
 use Whojinn\Sapphire\Parser\SapphireEscapeParser;
@@ -59,8 +61,9 @@ class SapphireExtension implements ConfigurableExtensionInterface
             ->addInlineParser(new SapphireSeparateParser(), 100)
             ->addInlineParser(new SapphireEscapeParser(), 100)
             ->addInlineParser(new SapphireInlineParser())
-            ->addEventListener(DocumentPreParsedEvent::class, [new SapphirePreParser(), 'preParse'])
+            // ->addEventListener(DocumentPreParsedEvent::class, [new SapphirePreParser(), 'preParse'])
             ->addEventListener(DocumentParsedEvent::class, [new SapphirePostParser(), 'postParse'])
+            ->addEventListener(DocumentRenderedEvent::class, [new SapphirePostRenderer(), 'postrender'])
             ->addRenderer(RubyNode::class, new SapphireInlineRenderer());
     }
 }
