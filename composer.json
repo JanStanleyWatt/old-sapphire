@@ -8,7 +8,7 @@
         }
     ],
     
-    "keywords": ["commonmark"],
+    "keywords": ["markdown","extension","md","commonmark"],
     
     "description": "League/commonmark extension for japanese furigana.",
     
