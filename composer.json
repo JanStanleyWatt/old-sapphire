@@ -37,5 +37,9 @@
         "psr-4": {
             "Whojinn\\Test\\":"test/"
         }
+    },
+    
+    "suggest": {
+        "whojinn/danraku": "League/commonmark extension for japanese danraku style."
     }
 }
