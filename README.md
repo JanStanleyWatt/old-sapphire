@@ -41,7 +41,6 @@ $config = [
     'sapphire' => [
         'use_sutegana' => false,    // trueにすると、ルビ文字のうち特定の小文字が大文字になる(ゅ→ゆ、ぁ→あ...etc)
         'use_rp_tag' => false,      // trueにすると、<rp>タグがルビにつく(<rp>（</rp><rt>ルビ</rt><rp>）</rp>)
-        'use_danraku_atama' => false// trueにすると、段落の頭に全角スペースが付くようになる
     ]
 ];
 ```

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * Copyright 2021 whojinn
@@ -15,6 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 namespace Whojinn\Sapphire;
 
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
@@ -25,7 +28,6 @@ use League\CommonMark\Extension\ConfigurableExtensionInterface;
 use League\Config\ConfigurationBuilderInterface;
 use Nette\Schema\Expect;
 use Whojinn\Sapphire\Listener\SapphirePostParser;
-use Whojinn\Sapphire\Listener\SapphirePostRenderer;
 use Whojinn\Sapphire\Listener\SapphirePreParser;
 use Whojinn\Sapphire\Node\RubyNode;
 use Whojinn\Sapphire\Parser\SapphireEscapeParser;
@@ -63,7 +65,6 @@ class SapphireExtension implements ConfigurableExtensionInterface
             ->addInlineParser(new SapphireInlineParser())
             // ->addEventListener(DocumentPreParsedEvent::class, [new SapphirePreParser(), 'preParse'])
             ->addEventListener(DocumentParsedEvent::class, [new SapphirePostParser(), 'postParse'])
-            ->addEventListener(DocumentRenderedEvent::class, [new SapphirePostRenderer(), 'postrender'])
             ->addRenderer(RubyNode::class, new SapphireInlineRenderer());
     }
 }

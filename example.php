@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2021 whojinn
 
@@ -14,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
@@ -25,17 +26,18 @@ $config = [
     'sapphire' => [
         'use_sutegana' => false,    // trueにすると、ルビ文字のうち特定の小文字が大文字になる(ゅ→ゆ、ぁ→あ...etc)
         'use_rp_tag' => false,      // trueにすると、<rp>タグがルビにつく(<rp>（</rp><rt>ルビ</rt><rp>）</rp>)
-        'use_danraku_atama' => true, // trueにすると、段落の頭に全角スペースが付くようになる
     ],
 ];
 
 $environment = new Environment($config);
 
-$environment->addExtension(new CommonMarkCoreExtension());
-$environment->addExtension(new SapphireExtension());
+$environment
+    ->addExtension(new CommonMarkCoreExtension())
+    ->addExtension(new SapphireExtension());
 
 $converter = new MarkdownConverter($environment);
 
-$markdown = 'この拡張機能《エクステンション》は｜素晴らしい《イカしてる》ね'."\n\n".'まさに革命的《かくめいてき》だ';
+$markdown = 'この拡張機能《エクステンション》は｜素晴らしい《イカしてる》ね';
 
+// <p>この<ruby>拡張機能<rt>エクステンション</rt></ruby>は<ruby>素晴らしい<rt>イカしてる</rt></ruby>ね</p>
 echo $converter->convertToHtml($markdown);
