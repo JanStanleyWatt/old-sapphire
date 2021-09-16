@@ -1,44 +1,44 @@
 {
     "name": "whojinn/sapphire",
-    
+
     "authors": [
         {
             "name": "whojinn",
             "email": "whojin.message@gmail.com"
         }
     ],
-    
+
     "keywords": ["markdown","extension","md","commonmark"],
-    
+
     "description": "League/commonmark extension for japanese furigana.",
-    
+
     "license": "Apache-2.0",
-    
+
     "require": {
         "league/commonmark":"2.*",
-        "php": "8.*",
+        "php": "^7.4 || ^8.0",
         "ext-mbstring": "*"
     },
-    
+
     "require-dev": {
         "noi/parsedown-rubytext": "*",
         "noi/parsedown-newline": "*",
         "phpunit/phpunit": "*",
         "friendsofphp/php-cs-fixer": "^3.1"
     },
-    
+
     "autoload": {
       "psr-4": {
           "Whojinn\\":"src/"
       }
     },
-    
+
     "autoload-dev": {
         "psr-4": {
             "Whojinn\\Test\\":"test/"
         }
     },
-    
+
     "suggest": {
         "whojinn/danraku": "League/commonmark extension for japanese danraku style."
     }
