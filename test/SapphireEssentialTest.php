@@ -2,13 +2,13 @@
 
 namespace Whojinn\Test;
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\Attributes\AttributesExtension;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\MarkdownConverter;
-use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertStringEqualsFile;
 use PHPUnit\Framework\TestCase;
 use Whojinn\Sapphire\SapphireExtension;
 
@@ -46,12 +46,12 @@ final class SapphireEssentialTest extends TestCase
 
         $converter = new MarkdownConverter($this->environment);
 
-        $markdown = file_get_contents(__DIR__.'/data/aozora.md');
-        $otehon = file_get_contents(__DIR__.'/data/aozora.html');
+        $markdown = file_get_contents(__DIR__ . '/data/aozora.md');
+        $otehon = file_get_contents(__DIR__ . '/data/aozora.html');
 
         $test = $converter->convertToHtml($markdown);
 
-        assertEquals($otehon, $test, '基本テストが上手くいかなかったでござる');
+        assertStringEqualsFile($otehon, $test, '基本テストが上手くいかなかったでござる');
     }
 
     final public function testSapphireAttributes()
@@ -62,12 +62,12 @@ final class SapphireEssentialTest extends TestCase
 
         $converter = new MarkdownConverter($this->environment);
 
-        $markdown = file_get_contents(__DIR__.'/data/attributes.md');
-        $otehon = file_get_contents(__DIR__.'/data/attributes.html');
+        $markdown = file_get_contents(__DIR__ . '/data/attributes.md');
+        $otehon = file_get_contents(__DIR__ . '/data/attributes.html');
 
         $test = $converter->convertToHtml($markdown);
 
-        assertEquals($otehon, $test, '属性付加テストが上手くいかなかったでござる');
+        assertStringEqualsFile($otehon, $test, '属性付加テストが上手くいかなかったでござる');
     }
 
     final public function testSapphireEmpty()
@@ -77,12 +77,12 @@ final class SapphireEssentialTest extends TestCase
 
         $converter = new MarkdownConverter($this->environment);
 
-        $markdown = file_get_contents(__DIR__.'/data/empty.md');
-        $otehon = file_get_contents(__DIR__.'/data/empty.html');
+        $markdown = file_get_contents(__DIR__ . '/data/empty.md');
+        $otehon = file_get_contents(__DIR__ . '/data/empty.html');
 
         $test = $converter->convertToHtml($markdown);
 
-        assertEquals($otehon, $test, '空文字テストが上手くいかなかったでござる');
+        assertStringEqualsFile($otehon, $test, '空文字テストが上手くいかなかったでござる');
     }
 
     final public function testSapphireEscapable()
@@ -92,12 +92,12 @@ final class SapphireEssentialTest extends TestCase
 
         $converter = new MarkdownConverter($this->environment);
 
-        $markdown = file_get_contents(__DIR__.'/data/escaping.md');
-        $otehon = file_get_contents(__DIR__.'/data/escaping.html');
+        $markdown = file_get_contents(__DIR__ . '/data/escaping.md');
+        $otehon = file_get_contents(__DIR__ . '/data/escaping.html');
 
         $test = $converter->convertToHtml($markdown);
 
-        assertEquals($otehon, $test, 'エスケープシーケンステストが上手くいかなかったでござる');
+        assertStringEqualsFile($otehon, $test, 'エスケープシーケンステストが上手くいかなかったでござる');
     }
 
     final public function testSapphireKanji()
@@ -107,12 +107,12 @@ final class SapphireEssentialTest extends TestCase
 
         $converter = new MarkdownConverter($this->environment);
 
-        $markdown = file_get_contents(__DIR__.'/data/kanji.md');
-        $otehon = file_get_contents(__DIR__.'/data/kanji.html');
+        $markdown = file_get_contents(__DIR__ . '/data/kanji.md');
+        $otehon = file_get_contents(__DIR__ . '/data/kanji.html');
 
         $test = $converter->convertToHtml($markdown);
 
-        assertEquals($otehon, $test, '漢字扱い記号のテストが上手くいかなかったでござる');
+        assertStringEqualsFile($otehon, $test, '漢字扱い記号のテストが上手くいかなかったでござる');
     }
 
     final public function testSapphireMonoRuby()
@@ -122,12 +122,12 @@ final class SapphireEssentialTest extends TestCase
 
         $converter = new MarkdownConverter($this->environment);
 
-        $markdown = file_get_contents(__DIR__.'/data/mono_ruby.md');
-        $otehon = file_get_contents(__DIR__.'/data/mono_ruby.html');
+        $markdown = file_get_contents(__DIR__ . '/data/mono_ruby.md');
+        $otehon = file_get_contents(__DIR__ . '/data/mono_ruby.html');
 
         $test = $converter->convertToHtml($markdown);
 
-        assertEquals($otehon, $test, 'モノルビテストが上手くいかなかったでござる');
+        assertStringEqualsFile($otehon, $test, 'モノルビテストが上手くいかなかったでござる');
     }
 
     /*
@@ -147,6 +147,6 @@ final class SapphireEssentialTest extends TestCase
 
     //     $test = $converter->convertToHtml($markdown);
 
-    //     assertEquals($otehon, $test, '構文入れ子テストが上手くいかなかったでござる');
+    //     assertStringEqualsFile($otehon, $test, '構文入れ子テストが上手くいかなかったでござる');
     // }
 }
