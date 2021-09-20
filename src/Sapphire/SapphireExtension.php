@@ -62,7 +62,6 @@ class SapphireExtension implements ConfigurableExtensionInterface
             ->addInlineParser(new SapphireSeparateParser(), 100)
             ->addInlineParser(new SapphireEscapeParser(), 100)
             ->addInlineParser(new SapphireInlineParser())
-            // ->addEventListener(DocumentPreParsedEvent::class, [new SapphirePreParser(), 'preParse'])
             ->addEventListener(DocumentParsedEvent::class, [new SapphirePostParser(), 'postParse'])
             ->addRenderer(RubyNode::class, new SapphireInlineRenderer());
     }

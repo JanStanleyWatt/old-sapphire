@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /**
  * Copyright 2021 whojinn
 
@@ -14,6 +16,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 namespace Whojinn\Sapphire\Parser;
 
 use League\CommonMark\Node\Inline\Text;
@@ -34,10 +37,19 @@ class SapphireEscapeParser implements InlineParserInterface
         $next_char = $cursor->peek();
 
         // 後ろの文字がルビ記号やバックスラッシュでなかったらfalseを返す
-        if ($next_char !== '｜' && $next_char !== '《' &&
-            $next_char !== '\\' && $next_char === null) {
+        if (
+            ($next_char !== '｜' && $next_char !== '《' && $next_char !== '\\')
+            || $next_char === null
+        ) {
             return false;
         }
+
+        // 行頭または引用記号(>)か脚注記号([^\d])の先頭にバックスラッシュが来た場合はfalseを返す。
+        // 仮にそれらの先頭に「《」が来た場合は仕様上ルビ記号として認識しないため
+        if (($cursor->getPosition() === 0) || mb_ereg('^\[\^(\d+?)\]:|^>', $cursor->getPreviousText())) {
+            return false;
+        }
+
         $cursor->advanceBy(2);
         $inlineContext->getContainer()->appendChild(new Text($next_char));
 

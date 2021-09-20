@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * Copyright 2021 whojinn
@@ -15,6 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 namespace Whojinn\Sapphire\Parser;
 
 use League\CommonMark\Node\Inline\Text;
