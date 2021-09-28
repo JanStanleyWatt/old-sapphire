@@ -37,10 +37,7 @@ class SapphireEscapeParser implements InlineParserInterface
         $next_char = $cursor->peek();
 
         // 後ろの文字がルビ記号やバックスラッシュでなかったらfalseを返す
-        if (
-            ($next_char !== '｜' && $next_char !== '《' && $next_char !== '\\')
-            || $next_char === null
-        ) {
+        if ($next_char === null || !mb_ereg('｜|《|\\\\', $next_char)) {
             return false;
         }
 
