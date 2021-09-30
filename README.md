@@ -1,3 +1,4 @@
+[![PHP Composer](https://github.com/whojinn/sapphire/actions/workflows/php.yml/badge.svg)](https://github.com/whojinn/sapphire/actions/workflows/php.yml)
 # Sapphire
 [Parsedownのルビ振り拡張機能](https://github.com/noisan/parsedown-rubytext)をリスペクトして作った、ルビ振り機能を追加するleague/commonmark用Extension
 
