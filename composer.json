@@ -43,5 +43,8 @@
 
     "suggest": {
         "whojinn/danraku": "League/commonmark extension for japanese danraku style."
+    },
+    "scripts": {
+        "test":"vendor/bin/phpunit test/SapphireEssentialTest.php"
     }
 }
