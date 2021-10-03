@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /**
  * Copyright 2021 whojinn
 
@@ -14,10 +16,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 namespace Whojinn\Sapphire\Listener;
 
 use League\CommonMark\Event\DocumentParsedEvent;
 use League\CommonMark\Node\Inline\Text;
+use League\CommonMark\Node\Query;
 use League\Config\ConfigurationInterface;
 use Whojinn\Sapphire\Node\RubyNode;
 use Whojinn\Sapphire\Node\RubyParentNode;
@@ -58,13 +62,20 @@ class SapphirePostParser
 
                         break;
                     }
-                }// foreach終端
-            }// if Text終端
+                } // foreach終端
+            } // if Text終端
 
             if ($node instanceof RubyNode && $node->getParentString() === '') {
                 $node->setParentString($parent_char);
                 $parent_char = '';
             }
         }
-    }
+
+        $match_nodes = (new Query())
+            ->where(Query::type(RubyParentNode::class));
+
+        foreach ($match_nodes as $node) {
+            $node->detach();
+        }
+    } // postParse終端
 }
