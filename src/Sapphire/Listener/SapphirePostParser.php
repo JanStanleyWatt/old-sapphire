@@ -73,12 +73,5 @@ class SapphirePostParser
                 $parent_char = '';
             }
         }
-
-        $match_nodes = (new Query())
-            ->where(Query::type(RubyParentNode::class));
-
-        foreach ($match_nodes as $node) {
-            $node->detach();
-        }
     } // postParse終端
 }
