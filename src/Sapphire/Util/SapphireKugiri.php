@@ -1,11 +1,29 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Whojinn\Sapphire\Util;
 
+/**
+ * Copyright 2021 whojinn
+
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+
+ *  http://www.apache.org/licenses/LICENSE-2.0
+
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 class SapphireKugiri
 {
     /**
      * 親文字の区切りパターンを収めた配列。
-     * noisan氏のコードを参考にしました：.
+     * 区切りパターンはnoisan氏の以下のコードの内、626行目から695行目までを借用しました。
      *
      * @see https://github.com/noisan/parsedown-rubytext/blob/master/lib/Parsedown/AozoraRubyTextTrait.php
      */
@@ -47,6 +65,8 @@ class SapphireKugiri
          *     t2hs.rbでも "&" については半角英数字と認識されなかった。
          *     ("AT&T《ルビ》" では末尾の "T" にルビが振られる)
          *     @see http://kumihan.aozora.gr.jp/slabid-5.htm
+         * 
+         *     2021/10/22引用者追記：League\CommonMarkではエスケープ変換がレンダリング時に行われるためか、エスケープ対象の"&"と'"'も正常に区切り文字として機能する。
          */
         'hankaku_alphanum' => '([A-Za-z0-9,#\-\&\']+(?:[\;\"]|\.+|[\!\?]+)?)$',
 
