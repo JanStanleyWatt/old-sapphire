@@ -35,7 +35,7 @@ class SapphireEscapeParser implements InlineParserInterface
     {
         $cursor = $inlineContext->getCursor();
         $next_char = $cursor->peek();
-        $is_escapable = ($next_char === ("｜" || "《" || "\\"));
+        $is_escapable = ($next_char === ('｜' || '《' || '\\'));
 
         // 後ろの文字がルビ記号やバックスラッシュでなかったらfalseを返す
         if ($next_char === null || $is_escapable) {
