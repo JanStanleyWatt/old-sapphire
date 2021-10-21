@@ -51,6 +51,7 @@ class SapphirePostParser
             if ($node instanceof RubyParentNode) {
                 $parent_char = $node->getLiteral();
                 $node->detach();
+                continue;
             }
 
             if ($node instanceof Text && $node->next() instanceof RubyNode) {
@@ -63,6 +64,8 @@ class SapphirePostParser
                         break;
                     }
                 } // foreach終端
+
+                continue;
             } // if Text終端
 
             if ($node instanceof RubyNode && $node->getParentString() === '') {
