@@ -22,7 +22,7 @@
         "body": [
             "｜${TM_SELECTED_TEXT}《$1》$2"
         ],
-        "description": "enclose Aozora ruby"
+        "description": "enclose Aozora ruby and sepalater"
     },
     
     // 文字を選択していない状態→カーソルをはさむように「《》」が挿入される。ルビを入力後tabキーを押すことで「《》」のすぐ後ろへとカーソルが飛ぶ。
@@ -31,6 +31,6 @@
         "body": [
             "《$1》$2"
         ],
-        "description": "enclose Aozora ruby and sepalater"
+        "description": "enclose Aozora ruby"
     }
 }
