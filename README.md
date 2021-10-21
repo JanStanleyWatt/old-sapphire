@@ -46,6 +46,20 @@ $config = [
 ];
 ```
 
+### VS Code用スニペット
+スニペット設定としてmarkdown.jsonを、スニペット用キーバインドとしてkeybindings.jsonを添付しました。機能は以下の通りです。
+- Markdownファイルの編集中にスニペット「aozora_ruby」を実行すると、カーソルを挟むようにルビ記号（《》）が挿入される
+  - ルビ文字を入力後にtabキーを押下することで、ルビ記号の直後にカー駿河移動するようになる
+- 文字を選択している状態でスニペット「aozora_ruby_separate」を実行すると、選択した文字を親文字と認識し、親文字の直前に区切り文字（｜）を、直後にルビ記号（《》）が挿入される
+  - カーソルの振る舞いは「aozora_ruby」に準ずる
+- keybindings.jsonの設定を有効にすると、Ctrl+rでスニペット「aozora_ruby」を実行するようになる
+  - 条件は以下の3つ:
+    - 編集画面を選択中
+    - 編集しているファイルをMarkdownとVS Codeが認識している
+    - ファイルは読み取り専用**ではない**
+- 文字を選択した状態でCtrl+rを入力すると、「aozora_ruby_separate」が実行される
+  - 条件は「aozora_ruby」に準ずる
+
 ## ライセンス
 Apache License, Version 2.0  
 - [英語原文](https://www.apache.org/licenses/LICENSE-2.0)
