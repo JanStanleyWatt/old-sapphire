@@ -21,7 +21,6 @@ namespace Whojinn\Sapphire\Listener;
 
 use League\CommonMark\Event\DocumentParsedEvent;
 use League\CommonMark\Node\Inline\Text;
-use League\CommonMark\Node\Query;
 use League\Config\ConfigurationInterface;
 use Whojinn\Sapphire\Node\RubyNode;
 use Whojinn\Sapphire\Node\RubyParentNode;
