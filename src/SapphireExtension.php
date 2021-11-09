@@ -22,12 +22,10 @@ namespace Whojinn\Sapphire;
 
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Event\DocumentParsedEvent;
-use League\CommonMark\Event\DocumentPreParsedEvent;
 use League\CommonMark\Extension\ConfigurableExtensionInterface;
 use League\Config\ConfigurationBuilderInterface;
 use Nette\Schema\Expect;
 use Whojinn\Sapphire\Listener\SapphirePostParser;
-use Whojinn\Sapphire\Listener\SapphirePreParser;
 use Whojinn\Sapphire\Node\RubyNode;
 use Whojinn\Sapphire\Parser\SapphireEscapeParser;
 use Whojinn\Sapphire\Parser\SapphireInlineParser;
