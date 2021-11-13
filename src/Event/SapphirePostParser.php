@@ -17,7 +17,7 @@ declare(strict_types=1);
  * limitations under the License.
  */
 
-namespace Whojinn\Sapphire\Listener;
+namespace Whojinn\Sapphire\Event;
 
 use League\CommonMark\Event\DocumentParsedEvent;
 use League\CommonMark\Node\Inline\Text;
