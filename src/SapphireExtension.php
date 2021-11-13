@@ -25,7 +25,7 @@ use League\CommonMark\Event\DocumentParsedEvent;
 use League\CommonMark\Extension\ConfigurableExtensionInterface;
 use League\Config\ConfigurationBuilderInterface;
 use Nette\Schema\Expect;
-use Whojinn\Sapphire\Listener\SapphirePostParser;
+use Whojinn\Sapphire\Event\SapphirePostParser;
 use Whojinn\Sapphire\Node\RubyNode;
 use Whojinn\Sapphire\Parser\SapphireEscapeParser;
 use Whojinn\Sapphire\Parser\SapphireInlineParser;
