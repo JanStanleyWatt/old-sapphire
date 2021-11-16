@@ -1,4 +1,8 @@
 [![PHP Composer](https://github.com/whojinn/sapphire/actions/workflows/php.yml/badge.svg)](https://github.com/whojinn/sapphire/actions/workflows/php.yml)
+![Packagist Version](https://img.shields.io/packagist/v/whojinn/sapphire)
+![Packagist Downloads](https://img.shields.io/packagist/dm/whojinn/sapphire?logoColor=Blue&style=plastic)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/whojinn/sapphire)
+![GitHub](https://img.shields.io/github/license/whojinn/sapphire)
 # Sapphire
 [Parsedownのルビ振り拡張機能](https://github.com/noisan/parsedown-rubytext)をリスペクトして作った、ルビ振り機能を追加するleague/commonmark用Extension
 
