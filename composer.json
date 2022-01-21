@@ -16,7 +16,7 @@
 
     "require": {
         "league/commonmark":"2.*",
-        "php": "^8.1"
+        "php": "^8.0 || ^8.1"
     },
 
     "require-dev": {
