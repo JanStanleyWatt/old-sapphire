@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * Copyright 2021 whojinn
@@ -15,6 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 namespace Whojinn\Sapphire\Parser;
 
 use League\CommonMark\Parser\Inline\InlineParserInterface;
@@ -82,17 +85,17 @@ class SapphireInlineParser implements InlineParserInterface, ConfigurationAwareI
         $restore = $cursor->saveState();
 
         // 不正な構文を弾く
-        if ($cursor->isAtEnd() || $cursor->getPosition() === 0 || $cursor->peek(-1) === '｜') {
+        if ($cursor->isAtEnd() || 0 === $cursor->getPosition() || '｜' === $cursor->peek(-1)) {
             return false;
         }
 
         // ルビを抽出
         // ルビが空だった場合はruby_charには空文字を入れる
         $cursor->advance();
-        $this->ruby_char = $cursor->getCharacter() === '》' ? '' : $cursor->match('/^(.+?)(?=》)/u');
+        $this->ruby_char = '》' === $cursor->getCharacter() ? '' : $cursor->match('/^(.+?)(?=》)/u');
 
         // マッチングしなかったり、ルビ文字があるのに「》」がなかったらレストアしてfalseを返す
-        if ($this->ruby_char === null || $cursor->isAtEnd()) {
+        if (null === $this->ruby_char || $cursor->isAtEnd()) {
             $cursor->restoreState($restore);
 
             return false;

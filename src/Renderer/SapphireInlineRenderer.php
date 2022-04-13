@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /**
  * Copyright 2021 whojinn
@@ -15,6 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 namespace Whojinn\Sapphire\Renderer;
 
 use function assert;
@@ -50,7 +53,7 @@ class SapphireInlineRenderer implements NodeRendererInterface, ConfigurationAwar
             $string_array .= $parent[$i];
 
             // ルビが空の場合は空の<rt>タグを入れる
-            if ($ruby[$i] === '') {
+            if ('' === $ruby[$i]) {
                 $string_array .= '<rt></rt>';
 
                 continue;

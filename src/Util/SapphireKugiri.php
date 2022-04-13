@@ -65,7 +65,7 @@ class SapphireKugiri
          *     t2hs.rbでも "&" については半角英数字と認識されなかった。
          *     ("AT&T《ルビ》" では末尾の "T" にルビが振られる)
          *     @see http://kumihan.aozora.gr.jp/slabid-5.htm
-         * 
+         *
          *     2021/10/22引用者追記：League\CommonMarkではエスケープ変換がレンダリング時に行われるためか、エスケープ対象の"&"と'"'も正常に区切り文字として機能する。
          */
         'hankaku_alphanum' => '([A-Za-z0-9,#\-\&\']+(?:[\;\"]|\.+|[\!\?]+)?)$',

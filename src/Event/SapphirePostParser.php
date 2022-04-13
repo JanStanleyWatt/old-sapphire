@@ -67,7 +67,7 @@ class SapphirePostParser
                 continue;
             } // if Text終端
 
-            if ($node instanceof RubyNode && $node->getParentString() === '') {
+            if ($node instanceof RubyNode && '' === $node->getParentString()) {
                 $node->setParentString($parent_char);
                 $parent_char = '';
             }

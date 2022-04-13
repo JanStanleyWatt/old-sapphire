@@ -42,7 +42,7 @@ class SapphireSeparateParser implements InlineParserInterface
         $restore = $cursor->saveState();
         $parent_char = '';
 
-        if ($cursor->peek() === '《') {
+        if ('《' === $cursor->peek()) {
             return false;
         }
 
@@ -57,7 +57,7 @@ class SapphireSeparateParser implements InlineParserInterface
         /*
          * ルビ記号が見つからなかったらレストアしてfalseを返す
          * */
-        if ($parent_char === null || $cursor->isAtEnd()) {
+        if (null === $parent_char || $cursor->isAtEnd()) {
             $cursor->restoreState($restore);
 
             return false;

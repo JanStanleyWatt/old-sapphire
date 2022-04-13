@@ -38,13 +38,13 @@ class SapphireEscapeParser implements InlineParserInterface
         $is_escapable = ($next_char === ('｜' || '《' || '\\'));
 
         // 後ろの文字がルビ記号やバックスラッシュでなかったらfalseを返す
-        if ($next_char === null || $is_escapable) {
+        if (null === $next_char || $is_escapable) {
             return false;
         }
 
         // 行頭または引用記号(>)か脚注記号([^\d])の先頭にバックスラッシュが来た場合はfalseを返す。
         // 仮にそれらの先頭に「《」が来た場合は仕様上ルビ記号として認識しないため
-        if (($cursor->getPosition() === 0) || mb_ereg('^\[\^(\d+?)\]:|^>', $cursor->getPreviousText())) {
+        if ((0 === $cursor->getPosition()) || mb_ereg('^\[\^(\d+?)\]:|^>', $cursor->getPreviousText())) {
             return false;
         }
 
