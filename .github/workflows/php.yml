@@ -25,9 +25,6 @@ jobs:
       with:
         php-version: ${{ matrix.php-version }}
 
-    - name: Setup Composer
-      run: composer config platform.php ~${{ matrix.php-version }}
-
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
