@@ -1,24 +1,29 @@
-name: PHP TEST
+name: PHP TEST 7.4
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
-env:
-  version: 8.0
+    branches: [ main ]
+  workflow_dispatch:
+    branches: [ main ]
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php-version: ['7.4']
+
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup PHP ${{ version }}
+    - name: Setup PHP ${{ matrix.php-version }}
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ version }}
+        php-version: ${{ matrix.php-version }}
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
@@ -37,5 +42,6 @@ jobs:
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
+
     - name: Run test suite
       run: composer run-script test
