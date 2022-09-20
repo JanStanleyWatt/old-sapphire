@@ -1,28 +1,31 @@
-name: PHP Composer
+name: PHP TEST
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ master ]
   pull_request:
-    branches: [ "master" ]
-
-permissions:
-  contents: read
-
+    branches: [ master ]
+env:
+  version: 8.0
 jobs:
   build:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
+
+    - name: Setup PHP ${{ version }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ version }}
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
 
     - name: Cache Composer packages
       id: composer-cache
-      uses: actions/cache@v3
+      uses: actions/cache@v2
       with:
         path: vendor
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
@@ -34,6 +37,5 @@ jobs:
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
-
     - name: Run test suite
       run: composer run-script test
