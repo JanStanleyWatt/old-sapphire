@@ -3,6 +3,12 @@
 ![Packagist Downloads](https://img.shields.io/packagist/dm/whojinn/sapphire?logoColor=Blue&style=plastic)
 ![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/whojinn/sapphire)
 ![GitHub](https://img.shields.io/github/license/whojinn/sapphire)
+
+# Notice
+Due to the ID change, I decided to recreate this repository. This repository will no longer be updated. Please use to [this repository](https://github.com/JanStanleyWatt/commonmark-furigana-extension) instead.
+
+ID変更に伴い、このリポジトリを新しく作り直すことにしました。以後、このリポジトリは更新されません。代わりに、[こちらのリポジトリ](https://github.com/JanStanleyWatt/commonmark-furigana-extension)をご利用ください
+
 # Sapphire
 [Parsedownのルビ振り拡張機能](https://github.com/noisan/parsedown-rubytext)をリスペクトして作った、ルビ振り機能を追加するleague/commonmark用Extension
 
